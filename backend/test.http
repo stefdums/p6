@@ -1,0 +1,35 @@
+
+
+# POST http://localhost:3000/api/sauces HTTP/1.1
+# Content-Type: application/json
+
+
+//GET http://localhost:3000/api/sauces HTTP/1.1
+
+
+//GET http://localhost:3000/api/sauces/5ec7e488a8f3f54f74ad97c1 HTTP/1.1
+
+# PUT http://localhost:3000/api/sauces/5ec7e488a8f3f54f74ad97c1 HTTP/1.1
+# Content-Type: application/json
+
+# {
+#     "userId": "sauce2",
+#     "name": "la sauce qui dechire de ouf3",
+#     "manufacturer": "heinz",
+#     "mainPepper": "piment",
+#     "imageUrl": " test image",
+#     "heat": 5,
+#     "likes": 10,
+#     "dislikes": 11,
+#     "usersLiked": [],
+#     "usersDisliked": []
+# }
+//DELETE  http://localhost:3000/api/sauces/5ecbcd17a665162c4833a9bb HTTP/1.1
+
+# POST http://localhost:3000/api/auth HTTP/1.1
+# Content-Type: application/json
+
+# {
+#     "email": "azerty@aol.com",
+#     "password": "azerty"
+# }
