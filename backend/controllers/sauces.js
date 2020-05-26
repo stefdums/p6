@@ -66,17 +66,29 @@ exports.deleteSauce = (req, res, next)=>{
     .catch( error => res.status(500).json({ error }))
     
 }
-/*
-exports.postLike = (req, res, next)=>{
-    sauce.findOne({ _id: req.params.id})
 
-    .then( sauce =>{
-        sauce.update(
-                { $inc: { likes: 1 }}
-            )
-        }
-    )
+exports.likeSauce = (req, res, next)=>{
+    Sauce.updateOne({ _id: req.params.id}, 
+        {
+            $inc: { likes: 1},
+            $push: { usersLiked: req.params.userId},
+            _id: req.params.id
+        }) 
+    
+    .then(()=> res.status(200).json({ message: "like"}))
     .catch( error => res.status(400).json({ error }))
 }
-*/
+
+exports.dislikeSauce = (req, res , next)=>{
+    Sauce.updateOne({ _id: req.params.id}, 
+        {
+            $inc: { likes: -1},
+            $push: { usersDisliked: req.params.userId},
+            _id: req.params.id
+        })
+
+    .then(()=> res.status(200).json({ message: "dislike"}))
+    .catch( error => res.status(400).json({ error }))
+}
+
 
