@@ -40,10 +40,7 @@ exports.login = (req, res , next)=>{
                     .then( () => res.status(401).json({error: "trop de tentative de connexion, veuillez contacter le service client"}))
                     .catch(error => res.status(500).json({error}))
                     
-                    console.log('trop de tentative de connexion, veuillez contacter le service client')
-                    
-                    
-                    
+                    console.log('trop de tentative de connexion, veuillez contacter le service client')    
                 }
                 
                 return res.status(401).json({error: " MDP faux "})
