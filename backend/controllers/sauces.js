@@ -14,7 +14,7 @@ exports.createSauce = (req, res, next)=>{
     });
     sauce.save()
     .then(()=>res.status(201).json({message: 'Objet enregistré'}))
-    .catch(error => res.status(400).json({message : "POST sauces ne marche pas"}));
+    .catch(error => res.status(400).json({error}));
 };
 
 /***
@@ -115,7 +115,7 @@ exports.likeSauce = (req, res, next)=>{
                         $pull: { usersLiked: req.body.userId }
                     }
                 )
-                .then(()=> res.status(200).json({message: "Like"} ))
+                .then(()=> res.status(200).json({message: "Like mit à 0"} ))
                 .catch( error => res.status(500).json({ error })) 
 
             }
@@ -127,7 +127,7 @@ exports.likeSauce = (req, res, next)=>{
                         $pull: { usersDisliked: req.body.userId}
                     }
                 )
-                .then(()=> res.status(200).json({ message: "DisLike mis à 0" }))
+                .then(()=> res.status(200).json({ message: "DisLike mit à 0" }))
                 .catch( error => res.status(500).json({ error })) 
             }
             else {
