@@ -3,8 +3,15 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 let tentatives = 0;
 
+/***
+ * regex pour un password qui devra contenir au moins:
+ *  1 minuscule, 1 majuscule, 1 caractere numeric, 1 caractere spécial, contenir minimum 10 caracteres
+ */
+let regexPwd = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{10,})/;
+
 exports.signup = (req, res , next)=>{
-    if((req.body.password).length > 9){ // Pour demander un password d'au moins 10 caracteres.
+ 
+   if (regexPwd.test(req.body.password)){
         bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
@@ -14,10 +21,11 @@ exports.signup = (req, res , next)=>{
             user.save()
             .then(()=> res.status(201).json({ message: 'utilisateur créée'}))
             .catch(error => res.status(400).json({error})) //syntaxe invalide
-            })
+        })
         .catch(error => res.status(500).json({error})) //Le serveur a rencontré une situation qu'il ne sait pas traiter.
-    }else {
-        return res.status(401).json({error: "Password trop court, 10 caractères minimun"})
+    }
+    else {
+        return res.status(401).json({error: "Password non conforme"}) //Non autorisé
     }    
 };
 

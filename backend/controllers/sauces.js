@@ -59,7 +59,7 @@ exports.deleteSauce = (req, res, next)=>{
         const filename = sauce.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {
             Sauce.deleteOne({ _id: req.params.id})
-            .then(()=> res.status(201).json({message : 'Objet supprimé'})) //une nouvelle ressource a été créée en guise de résultat
+            .then(()=> res.status(200).json({message : 'Objet supprimé'})) //une nouvelle ressource a été créée en guise de résultat
             .catch(error => res.status(400).json({ error })) //syntaxe invalide
         });
     })
@@ -82,7 +82,7 @@ exports.likeSauce = (req, res, next)=>{
                 $push: { usersLiked: req.body.userId}
             }
         )
-        .then((sauce)=> res.status(201).json({ message: "LIKE" })) //une nouvelle ressource a été créée en guise de résultat
+        .then((sauce)=> res.status(200).json({ message: "LIKE" })) //une nouvelle ressource a été créée en guise de résultat
     
         .catch( error => res.status(400).json({ error })) //syntaxe invalide
     }
@@ -97,7 +97,7 @@ exports.likeSauce = (req, res, next)=>{
                 $push: { usersDisliked: req.body.userId}
             }
         )
-        .then((sauce)=> res.status(201).json({ message: "DISLIKE" })) //une nouvelle ressource a été créée en guise de résultat
+        .then((sauce)=> res.status(200).json({ message: "DISLIKE" })) 
         .catch( error => res.status(400).json({ error })) //syntaxe invalide
     }
 /***
@@ -116,7 +116,7 @@ exports.likeSauce = (req, res, next)=>{
                         $pull: { usersLiked: req.body.userId }
                     }
                 )
-                .then(()=> res.status(201).json({message: "Like mit à 0"} )) //une nouvelle ressource a été créée en guise de résultat
+                .then(()=> res.status(200).json({message: "Like mit à 0"} )) 
                 .catch( error => res.status(400).json({ error })) //syntaxe invalide
 
             }
@@ -128,7 +128,7 @@ exports.likeSauce = (req, res, next)=>{
                         $pull: { usersDisliked: req.body.userId}
                     }
                 )
-                .then(()=> res.status(201).json({ message: "DisLike mit à 0" })) //une nouvelle ressource a été créée en guise de résultat
+                .then(()=> res.status(200).json({ message: "DisLike mit à 0" })) 
                 .catch( error => res.status(400).json({ error })) //syntaxe invalide
             }
             else {
