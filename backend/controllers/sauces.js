@@ -24,7 +24,7 @@ exports.createSauce = (req, res, next)=>{
     let mainPepperClean = clean(sauceObject.mainPepper);
     delete sauceObject._id;
     const sauce = new Sauce({
-        userId: req.body.userId,
+        userId: sauceObject.userId,
         name: nameClean, 
         manufacturer: manufacturerClean, 
         description: descriptionClean, 
@@ -32,8 +32,6 @@ exports.createSauce = (req, res, next)=>{
         heat: sauceObject.heat,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-    console.log(sauce)
-    //console.log(sauceObject)
     sauce.save()
     .then(()=>res.status(201).json({message: 'Objet enregistré'})) //une nouvelle ressource a été créée en guise de résultat
     .catch(error => res.status(400).json({error})); //syntaxe invalide
@@ -65,18 +63,31 @@ exports.modifySauce = (req, res, next)=>{
     let manufacturerClean = clean(req.body.manufacturer);
     let descriptionClean = clean(req.body.description);
     let mainPepperClean = clean(req.body.mainPepper);
+
+    const sauceObjectModif = JSON.parse(req.body.sauce);
+    let nameCleanSauce = clean(sauceObjectModif.name);
+    let manufacturerCleanSauce = clean(sauceObjectModif.manufacturer);
+    let descriptionCleanSauce = clean(sauceObjectModif.description);
+    let mainPepperCleanSauce = clean(sauceObjectModif.mainPepper);
+    
     const sauceObject = req.file ?
     { 
-        ...JSON.parse(req.body.sauce),
+        name: nameCleanSauce,
+        manufacturer: manufacturerCleanSauce,
+        description: descriptionCleanSauce,
+        mainPepper: mainPepperCleanSauce,
+        heat: sauceObjectModif.heat,
+        userId: sauceObjectModif.userId,
         imageUrl:  `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-     } : { //...req.body }
+
+     } : { 
         name: nameClean, 
         manufacturer: manufacturerClean, 
         description: descriptionClean, 
         mainPepper: mainPepperClean,
         heat: req.body.heat
     }    
-    //console.log(description)
+
     Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
     .then(()=> res.status(200).json({message: 'objet modifié'}))
     .catch( error => res.status(400).json({ error })) //syntaxe invalide
