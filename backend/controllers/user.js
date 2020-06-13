@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 let tentatives = 0;
+const mongoSanitize = require('express-mongo-sanitize');
 
 /***
  * regex pour un password qui devra contenir au moins:

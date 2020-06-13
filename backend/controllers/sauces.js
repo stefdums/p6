@@ -1,18 +1,39 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
+//const mongoSanitize = require('express-mongo-sanitize');
+// const sanitize = require('mongo-sanitize');
 
+
+var clean = require('xss-clean/lib/xss').clean
+// let nameClean = clean(req.body.name);
+// let manufacturerClean = clean(req.body.manufacturer);
+// let descriptionClean = clean(req.body.description);
+// let mainPepperClean = clean(req.body.mainPepper);
 
 /***
  * POST sauce
  *  
  */ 
 exports.createSauce = (req, res, next)=>{
-    const sauceObject = JSON.parse(entities.encode(req.body.sauce));
+    
+    const sauceObject = JSON.parse(req.body.sauce);
+
+    let nameClean = clean(sauceObject.name);
+    let manufacturerClean = clean(sauceObject.manufacturer);
+    let descriptionClean = clean(sauceObject.description);
+    let mainPepperClean = clean(sauceObject.mainPepper);
     delete sauceObject._id;
     const sauce = new Sauce({
-        ...sauceObject,
+        userId: req.body.userId,
+        name: nameClean, 
+        manufacturer: manufacturerClean, 
+        description: descriptionClean, 
+        mainPepper: mainPepperClean,
+        heat: sauceObject.heat,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
+    console.log(sauce)
+    //console.log(sauceObject)
     sauce.save()
     .then(()=>res.status(201).json({message: 'Objet enregistré'})) //une nouvelle ressource a été créée en guise de résultat
     .catch(error => res.status(400).json({error})); //syntaxe invalide
@@ -40,11 +61,22 @@ exports.getSauceById = (req, res, next)=>{
  * PUT pour UNE sauce
  */
 exports.modifySauce = (req, res, next)=>{
+    let nameClean = clean(req.body.name);
+    let manufacturerClean = clean(req.body.manufacturer);
+    let descriptionClean = clean(req.body.description);
+    let mainPepperClean = clean(req.body.mainPepper);
     const sauceObject = req.file ?
     { 
         ...JSON.parse(req.body.sauce),
         imageUrl:  `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-     } : { ...req.body}
+     } : { //...req.body }
+        name: nameClean, 
+        manufacturer: manufacturerClean, 
+        description: descriptionClean, 
+        mainPepper: mainPepperClean,
+        heat: req.body.heat
+    }    
+    //console.log(description)
     Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
     .then(()=> res.status(200).json({message: 'objet modifié'}))
     .catch( error => res.status(400).json({ error })) //syntaxe invalide

@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+
 require('dotenv').config();
 
 
@@ -16,6 +17,7 @@ mongoose.connect('mongodb+srv://'+ process.env.MONGODB_USER +':'+ process.env.MO
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 
 
 
