@@ -1,14 +1,7 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
-//const mongoSanitize = require('express-mongo-sanitize');
-// const sanitize = require('mongo-sanitize');
-
 
 var clean = require('xss-clean/lib/xss').clean
-// let nameClean = clean(req.body.name);
-// let manufacturerClean = clean(req.body.manufacturer);
-// let descriptionClean = clean(req.body.description);
-// let mainPepperClean = clean(req.body.mainPepper);
 
 /***
  * POST sauce
